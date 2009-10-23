@@ -1,0 +1,211 @@
+#!/usr/bin/env python
+# encoding: utf-8
+"""
+imageextractor.py
+
+Created by Ryan Matthew Balfanz on 2009-05-28.
+
+Copyright (c) 2009 Ryan Matthew Balfanz. All rights reserved.
+"""
+
+
+# In Python 2.5,
+# the with statement is only allowed
+# when the with_statement feature has been enabled.
+# It will always be enabled in Python 2.6.
+from __future__ import with_statement
+
+import logging
+import os
+import sys
+import unittest
+
+import Image
+
+from core.common import open_pds
+from core.parser import Parser
+from core.extractorbase import ExtractorBase
+
+
+class ImageExtractor(ExtractorBase):
+	"""Extract an image embedded within a PDS file.
+	
+	Returned images are instances of the Python Imaging Library Image class.
+	As such, this module depends on PIL.
+	
+	An attached image may be extracted from by 
+	determining its location within the file and identifying its size.
+	Not all PDS images are supported at this time.
+	
+	Currently this module only supports FIXED_LENGTH as the RECORD_TYPE,
+	8 as the SAMPLE_BITS and either UNSIGNED_INTEGER or MSB_UNSIGNED_INTEGER as the SAMPLE_TYPE.
+	Attempts to extract an image that is not supported will result in None being returned.
+	
+	Simple Example Usage
+	
+	>>> import Image
+	>>> from imageextractor import ImageExtractor
+	>>> ie = ImageExtractor()
+	>>> img = ie.extract('pdsFileWithAnImage.lbl')
+	>>>	if img:
+	>>> 	img.save('extractedImage.jpg')
+	>>> else:
+	>>> 	print "The image was not supported."
+	"""
+	
+	def __init__(self, log=None):
+		super(ImageExtractor, self).__init__()
+		
+		self.log = log
+		if log:
+			self._init_logging()	
+
+	def _init_logging(self):
+		"""Initialize logging."""
+		# Set the message format.
+		format = logging.Formatter("%(levelname)s:%(name)s:%(asctime)s:%(message)s")
+
+		# Create the message handler.
+		stderr_hand = logging.StreamHandler(sys.stderr)
+		stderr_hand.setLevel(logging.DEBUG)
+		stderr_hand.setFormatter(format)
+
+		# Create a handler for routing to a file.
+		logfile_hand = logging.FileHandler(self.log + '.log')
+		logfile_hand.setLevel(logging.DEBUG)
+		logfile_hand.setFormatter(format)
+
+		# Create a top-level logger.
+		self.log = logging.getLogger(self.log)
+		self.log.setLevel(logging.DEBUG)
+		self.log.addHandler(logfile_hand)
+		self.log.addHandler(stderr_hand)
+
+		self.log.debug('Initializing logger')
+		
+	def extract(self, source):
+		"""Extract an image from *source*.
+		
+		If the image is supported an instance of PIL's Image is returned, otherwise None.
+		"""
+		p = Parser()
+		f = open_pds(source)
+		p.parse(f)
+		print "extract: Done Parsing"
+		self.labels = p.labels
+		if self._check_image_is_supported():
+			dim = self._get_image_dimensions()
+			loc = self._get_image_location()
+			f.seek(loc)
+			rawImageData = f.readline()
+			# The frombuffer defaults may change in a future release;
+			# for portability, change the call to read:
+			# frombuffer(mode, size, data, 'raw', mode, 0, 1).
+			img = Image.frombuffer('L', dim, rawImageData, 'raw', 'L', 0, 1)
+		else:
+			print "Image is not supported (%s)" % (source,)
+			img = None
+		f.close()
+				
+		return img
+			
+	def _check_image_is_supported(self):
+		"""Check that the image is supported."""
+		SUPPORTED = {}
+		SUPPORTED['RECORD_TYPE'] = 'FIXED_LENGTH',
+		SUPPORTED['SAMPLE_BITS'] = 8,
+		SUPPORTED['SAMPLE_TYPE'] = 'UNSIGNED_INTEGER', 'MSB_UNSIGNED_INTEGER'
+				
+		if not self.labels.has_key('IMAGE'):
+			if self.log: self.log.warn("No image data found")
+			return False
+			
+		recordType = self.labels['RECORD_TYPE']
+		imageSampleBits = int(self.labels['IMAGE']['SAMPLE_BITS'])
+		imageSampleType = self.labels['IMAGE']['SAMPLE_TYPE']
+
+		if recordType not in SUPPORTED['RECORD_TYPE']:
+			errorMessage = ("RECORD_TYPE '%s' is not supported") % (recordType)
+			#raise NotImplementedError(errorMessage)
+			return False
+		if imageSampleBits not in SUPPORTED['SAMPLE_BITS']:
+			errorMessage = ("SAMPLE_BITS '%s' is not supported") % (imageSampleBits)
+			#raise NotImplementedError(errorMessage)
+			return False
+		if imageSampleType not in SUPPORTED['SAMPLE_TYPE']:
+			errorMessage = ("SAMPLE_TYPE '%s' is not supported") % (imageSampleType)
+			#raise NotImplementedError(errorMessage)
+			return False
+			
+		return True
+			
+	def _get_image_dimensions(self):
+		"""Return the dimensions of the image as (width, height).
+		
+		The image size is expected to be defined by the labels LINES_SAMPLES and LINES as width and height, respectively.
+		"""
+		imageWidth = int(self.labels['IMAGE']['LINE_SAMPLES'])
+		imageHeight = int(self.labels['IMAGE']['LINES'])
+		return imageWidth, imageHeight
+			
+	def _get_image_location(self):
+		"""Return the seek-able position of the image.
+		
+		The seek byte is defined by the ^IMAGE pointer.
+		It may be a single value or a value accompanied by its units.
+		
+		If only a single value is given the image location is given by 
+		the product of the (value - 1) and RECORD_BYTES.
+		
+		If the units are given along with the value, they must be <BYTES>.
+		The image location is given by the value.
+		"""
+		imagePointer = self.labels['^IMAGE'].split()
+		if len(imagePointer) == 1:
+			recordBytes = int(self.labels['RECORD_BYTES'])
+			imageLocation = (int(imagePointer[0]) - 1) * recordBytes
+		elif len(imagePointer) == 2:
+			units = imagePointer[1]
+			if not units == '<BYTES>':
+				errorMessage = ("Expected <BYTES> image pointer units but found %s") % (units)
+				raise ValueError, (errorMessage)
+			else:
+				imageLocation = int(imagePointer[0])
+		else:
+			errorMessage = ("^IMAGE contains extra information") % (imageSampleType)
+			raise ValueError(errorMessage)
+		return imageLocation
+		
+		
+class ImageExtractorTests(unittest.TestCase):
+	"""Unit tests for class ImageExtractor"""
+	def setUp(self):
+		pass
+
+	def test_no_exceptions(self):
+		import os
+
+		from core import open_pds
+
+		testDataDir = '../../test_data/'
+		outputDir = '../../tmp/'
+		imgExtractor = ImageExtractor(log="ImageExtractor_Unit_Tests")
+		for root, dirs, files in os.walk(testDataDir):
+			for name in files:
+				filename = os.path.join(root, name)
+				print filename
+				img = imgExtractor.extract(open_pds(filename))
+				try:
+						img.save(outputDir + name + '.jpg')
+				except Exception, e:
+					# Re-raise the exception, causing this test to fail.
+					#raise
+					pass
+				else:
+					# The following is executed if and when control flows off the end of the try clause.
+					assert True
+
+
+if __name__ == '__main__':
+	unittest.main()
+	
