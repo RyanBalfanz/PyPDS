@@ -9,12 +9,6 @@ Copyright (c) 2009 Ryan Matthew Balfanz. All rights reserved.
 """
 
 
-# In Python 2.5,
-# the with statement is only allowed
-# when the with_statement feature has been enabled.
-# It will always be enabled in Python 2.6.
-from __future__ import with_statement
-
 import logging
 import os
 import sys
