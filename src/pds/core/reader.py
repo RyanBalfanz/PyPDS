@@ -124,6 +124,7 @@ class Reader(object):
 		
 		# Explicitly create an iterator with a sentinal for more control
 		# Using an iterator produces a bug which causes execution to hang when reading files with "\n" style newlines
+		# Scratch that, it looks like the bug appeared while reading a .DS_Store file -- i.e. breaks if sentinal DNE.
 		#if source.mode in ("U", "rU"):
 		#	it = iter(source.readline, "END\n")
 		#elif source.mode in ("r", "rb"):
@@ -144,6 +145,8 @@ class Reader(object):
 				if not commentEnd.search(line):
 					if self.log: self.log.warn("Detected possible multiline comment near line %d" % i)
 			elif line == r"END":
+				# We only really need this check if not using a sentinal.
+				# But its not going to hurt anyone being around anyway.
 				break
 			else:
 				[tokens.append(token) for token in line.split() if token]
