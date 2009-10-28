@@ -85,7 +85,6 @@ class ImageExtractor(ExtractorBase):
 		p = Parser()
 		f = open_pds(source)
 		p.parse(f)
-		print "extract: Done Parsing"
 		self.labels = p.labels
 		if self._check_image_is_supported():
 			dim = self._get_image_dimensions()
