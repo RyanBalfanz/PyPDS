@@ -89,9 +89,9 @@ class Reader(object):
 
 		self.log.debug('Initializing logger')
 
-	def __iter__(self):
-		"""This is an iterator."""
-		return self
+	#def __iter__(self):
+	#	"""This is an iterator."""
+	#	return self
 
 	def next(self, source):
 		"""Return the next record.
@@ -172,7 +172,7 @@ class Reader(object):
 					yield tokens[keyIndex], ' '.join(tokens[dataStartIndex:])
 				yield tokens[keyIndex], ' '.join(tokens[dataStartIndex:dataEndIndex])
 		#yield None
-		raise StopIteration
+		#raise StopIteration
 
 	#@property
 	#def reader(self):
