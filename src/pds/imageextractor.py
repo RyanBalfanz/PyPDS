@@ -96,7 +96,7 @@ class ImageExtractor(ExtractorBase):
 			# frombuffer(mode, size, data, 'raw', mode, 0, 1).
 			img = Image.frombuffer('L', dim, rawImageData, 'raw', 'L', 0, 1)
 		else:
-			print "Image is not supported (%s)" % (source,)
+			if self.log: self.log.error("Could not extract from '%s'" % (source))
 			img = None
 		f.close()
 				
