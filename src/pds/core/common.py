@@ -18,7 +18,7 @@ def open_pds(source):
 	This method generalizes the standard open() function call.
 	The *source* may be a file-like object, a file, a URL, or a string.
 	"""
-	if hasattr(source, 'read'):
+	if isinstance(source, file):
 		return source
 
 	try:
