@@ -26,7 +26,7 @@ def open_pds(source):
 		# For preserved newlines -- e.g. "\r", "\r\n", "\n", use mode "rb".
 		# PDS style newlines are "\r\n", however, http://pds.jpl.nasa.gov/documents/qs/sample_image.lbl uses "\n".
 		# Check if hasattr(open, 'newlines') to verify that universal newline support is enabeled.
-		f = open(source, "U")
+		f = open(source, "rb")
 		return f
 	except (IOError, OSError):
 		pass
