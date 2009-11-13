@@ -100,7 +100,7 @@ class ImageExtractor(ExtractorBase):
 			img = None
 		f.close()
 				
-		return img
+		return img, self.labels
 			
 	def _check_image_is_supported(self):
 		"""Check that the image is supported."""
