@@ -84,23 +84,33 @@ class ImageExtractor(ExtractorBase):
 		"""
 		p = Parser()
 		f = open_pds(source)
+		if self.log: self.log.debug("Parsing '%s'" % (source))
 		p.parse(f)
 		self.labels = p.labels
+		if self.log: self.log.debug("Found %d labels" % (len(self.labels)))
 		if self._check_image_is_supported():
+			if self.log: self.log.debug("Image in '%s' is supported" % (source))
 			dim = self._get_image_dimensions()
 			loc = self._get_image_location()
+			if self.log: self.log.debug("Image dimensions should be %s" % (str(dim)))
+			if self.log: self.log.debug("Seeking to image data at %d" % (loc))
 			f.seek(loc)
+			if self.log: self.log.debug("Seek successful, reading data")
 			rawImageData = f.readline()
+			if self.log: self.log.debug("Read successful (len: %d), creating Image object" % (len(rawImageData)))
 			# The frombuffer defaults may change in a future release;
 			# for portability, change the call to read:
 			# frombuffer(mode, size, data, 'raw', mode, 0, 1).
 			img = Image.frombuffer('L', dim, rawImageData, 'raw', 'L', 0, 1)
+			if self.log: self.log.debug("Image result: %s" % (str(img)))
+			if self.log: self.log.debug("Image info: %s" % (str(img.info)))
+			if self.log: self.log.debug("Image size: %s" % (str(img.size)))
 		else:
-			if self.log: self.log.error("Could not extract from '%s'" % (source))
+			if self.log: self.log.error("Image is not supported '%s'" % (source))
 			img = None
 		f.close()
 				
-		return img
+		return img, self.labels
 			
 	def _check_image_is_supported(self):
 		"""Check that the image is supported."""
