@@ -32,7 +32,7 @@ def open_pds(source):
 		except ImportError:
 			import StringIO
 		else:
-			sys.stderr.write("Making a file-like object from string source")
+			sys.stderr.write("Making a file-like object from string source\n")
 			return StringIO.StringIO(str(source))
 
 	try:
