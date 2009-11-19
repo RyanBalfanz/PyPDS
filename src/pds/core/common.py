@@ -25,15 +25,6 @@ def open_pds(source):
 	if hasattr(source, "read"):
 		sys.stderr.write("Identified a file-like object by read() method existence\n")
 		return source
-		
-	if isinstance(source, str):
-		try:
-			import cStringIO as StringIO
-		except ImportError:
-			import StringIO
-		else:
-			sys.stderr.write("Making a file-like object from string source\n")
-			return StringIO.StringIO(str(source))
 
 	try:
 		# For universal newlines -- i.e. newlines are automatically converted to "\n", use mode "U".
@@ -53,6 +44,15 @@ def open_pds(source):
 		pass
 		#f.close()
 		
+	if isinstance(source, str):
+		try:
+			import cStringIO as StringIO
+		except ImportError:
+			import StringIO
+		else:
+			sys.stderr.write("Making a file-like object from string source\n")
+			return StringIO.StringIO(str(source))
+			
 	# try:
 	# 	import urllib
 	# 	f = urllib.urlopen(source)
