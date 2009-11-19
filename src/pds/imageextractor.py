@@ -85,8 +85,7 @@ class ImageExtractor(ExtractorBase):
 		p = Parser()
 		f = open_pds(source)
 		if self.log: self.log.debug("Parsing '%s'" % (source))
-		p.parse(f)
-		self.labels = p.labels
+		self.labels = p.parse(f)
 		if self.log: self.log.debug("Found %d labels" % (len(self.labels)))
 		if self._check_image_is_supported():
 			if self.log: self.log.debug("Image in '%s' is supported" % (source))
