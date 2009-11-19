@@ -110,18 +110,14 @@ class Parser(object):
 		"""Print a friendly, user readable representation of an instance."""
 		strItems = []
 		strItems.append('PDSParser: %s' % (repr(self),))
-		strItems.append('\tNumber of top-level attributes: %d' % (len(self._labels,)))
 		return '\n'.join(strItems)
-		
-	@property
-	def labels(self):
-		"""Return a list containing the labels defined in the PDS file."""
-		return self._labels
 			
 	def parse(self, source):
 		"""Parse the source PDS data."""
 		if self.log: self.log.debug("Parsing '%s'" % (source.name,))
 		self._labels = self._parse_header(source)
+		if self.log: self.log.debug("Parsed %d top-level labels" % (len(self._labels)))
+		return self._labels
 
 	def _parse_header(self, source):
 		"""Parse the PDS header.
