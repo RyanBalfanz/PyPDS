@@ -14,7 +14,7 @@ import cStringIO as StringIO
 
 from pds.imageextractor import ImageExtractor
 
-def gfiles():
+def gfiles(files=None, mode=None):
 	"""Generate files from fileinput.input().
 	
 	Extends the functionality of fileinput.input() to generate complete files.
@@ -29,7 +29,7 @@ def gfiles():
 	import fileinput
 	
 	curFileBuffer = None
-	for line in fileinput.input(mode="rb"):
+	for line in fileinput.input(files=files, mode=mode):
 		if fileinput.isfirstline():
 			if not curFileBuffer:
 				# This is the first line of the first file.
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 		parser.error("you must specifiy at least one input file argument")
 	
 	extractor = ImageExtractor()
-	for pdsContents in gfiles():
+	for pdsContents in gfiles(args, "rb"):
 		pdsFile = StringIO.StringIO(pdsContents)
 		
 		if options.step_through:
