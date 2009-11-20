@@ -10,7 +10,49 @@ Copyright (c) 2009 Ryan Balfanz. All rights reserved.
 import optparse
 import sys
 
+import cStringIO as StringIO
+
 from pds.imageextractor import ImageExtractor
+
+def gfiles():
+	"""Generate files from fileinput.input().
+	
+	Extends the functionality of fileinput.input() to generate complete files.
+	Note that line endings are preserved.
+	
+	Example usage:
+		>>> for contents in gfiles():
+		>>> 	f = StringIO.StringIO(contents)
+		>>> 	for line in f:
+		>>> 		sys.stdout.write(line)
+	"""
+	import fileinput
+	
+	curFileBuffer = None
+	for line in fileinput.input(mode="rb"):
+		if fileinput.isfirstline():
+			if not curFileBuffer:
+				# This is the first line of the first file.
+				curFileBuffer = StringIO.StringIO()
+				curFileBuffer.write(line)
+			else:
+				# This is a new file that is not the first file, return the previous file buffer.
+				contents = curFileBuffer.getvalue()
+				curFileBuffer.close()
+				curFileBuffer = None
+				# We cannot include the filename becuase of how fileinput.filename() works.
+				yield contents
+				curFileBuffer = StringIO.StringIO()
+				curFileBuffer.write(line)
+				# fileinput.nextfile() # This breaks stuff, but I feel like it belongs.
+		else:
+			# Just some line in the current file, write line to buffer.
+			curFileBuffer.write(line)
+	contents = curFileBuffer.getvalue()
+	curFileBuffer.close()
+	curFileBuffer = None
+	fileinput.close() # Is this really needed?
+	yield contents
 
 def setUpOptionParser():
 	"""docstring for setUpOptionParser"""
@@ -60,7 +102,9 @@ if __name__ == '__main__':
 		parser.error("you must specifiy at least one input file argument")
 	
 	extractor = ImageExtractor()
-	for pdsFile in args:
+	for pdsContents in gfiles():
+		pdsFile = StringIO.StringIO(pdsContents)
+		
 		if options.step_through:
 			sys.stderr.write("stepping through files... press key to continue\n")
 			raw_input()
