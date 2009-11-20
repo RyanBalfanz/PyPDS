@@ -75,15 +75,15 @@ def setUpOptionParser():
 		help="Ignore exceptions raised on image extraction. Turn on verbose output to examine.")
 	parser.add_option_group(dangerGroup)
 	
-	# Define the options we accept.
-	# parser.add_option("-f", "--file", dest="filename",
-	# 	help="read data from FILENAME")
 	parser.add_option("-v", "--verbose",
 		action="store_true", dest="verbose",
 		help="make lots of noise")
 	parser.add_option("-q", "--quiet",
 		action="store_false", dest="verbose",
 		help="surpress output")
+	parser.add_option("--log",
+		action="store", dest="log",
+		help="optional log filename, .log extension will be added", metavar="FILE")
 	parser.add_option("--show-labels",
 		action="store_false", dest="show_labels",
 		help="pretty print PDS labels [default=%default]")
@@ -100,13 +100,13 @@ if __name__ == '__main__':
 		
 	if not args:
 		parser.error("you must specifiy at least one input file argument")
-	
-	extractor = ImageExtractor()
+		
+	extractor = ImageExtractor(log=options.log)
 	for pdsContents in gfiles(args, "rb"):
 		pdsFile = StringIO.StringIO(pdsContents)
 		
 		if options.step_through:
-			sys.stderr.write("stepping through files... press key to continue\n")
+			sys.stderr.write("stepping through files... press enter to continue\n")
 			raw_input()
 			
 		if options.verbose:
