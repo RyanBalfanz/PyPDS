@@ -10,6 +10,9 @@ Copyright (c) 2009 Ryan Matthew Balfanz. All rights reserved.
 
 import sys
 
+# from contextlib import contextmanager
+from contextlib import closing
+
 PDS_END_OF_LINE = r"\r\n"
 PDS_END_OF_HEADER = r"END"
 PDS_CONTAINERS = {"OBJECT":"END_OBJECT", "GROUP":"END_GROUP"}
@@ -23,7 +26,7 @@ def open_pds(source):
 	# if isinstance(source, file):
 	# 	return source
 	if hasattr(source, "read"):
-		sys.stderr.write("Identified a file-like object by read() method existence\n")
+		# sys.stderr.write("Identified a file-like object by read() method existence\n")
 		return source
 
 	try:
@@ -34,15 +37,16 @@ def open_pds(source):
 		f = open(source, "rb")
 		return f
 	except (IOError, OSError):
-		sys.stderr.write("Could not open source\n")
+		# sys.stderr.write("Could not open source\n")
 		raise
 	else:
-		sys.stderr.write("Opened source\n")
+		# sys.stderr.write("Opened source\n")
 		# Re-raise to catch something hairy.
 		raise
 	finally:
 		pass
-		#f.close()
+		# sys.stderr.write("Closing previously opened file\n")
+		# f.close()
 		
 	if isinstance(source, str):
 		try:
@@ -50,7 +54,7 @@ def open_pds(source):
 		except ImportError:
 			import StringIO
 		else:
-			sys.stderr.write("Making a file-like object from string source\n")
+			# sys.stderr.write("Making a file-like object from string source\n")
 			return StringIO.StringIO(str(source))
 			
 	# try:
