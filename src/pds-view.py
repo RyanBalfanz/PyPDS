@@ -14,45 +14,30 @@ import cStringIO as StringIO
 
 from pds.imageextractor import ImageExtractor
 
-def gfiles(files=None, mode=None):
-	"""Generate files from fileinput.input().
+def gfiles(*args, **kwargs):
+	"""Generate chunked files from input provided by fileinput.input().
 	
-	Extends the functionality of fileinput.input() to generate complete files.
-	Note that line endings are preserved.
-	
-	Example usage:
-		>>> for contents in gfiles():
-		>>> 	f = StringIO.StringIO(contents)
-		>>> 	for line in f:
-		>>> 		sys.stdout.write(line)
+	Yields a filename and contents, with line endings preserved.
 	"""
 	import fileinput
+	import cStringIO as StringIO
 	
-	curFileBuffer = None
-	for line in fileinput.input(files=files, mode=mode):
+	from collections import deque
+	
+	d = deque()
+	for line in fileinput.input(*args, **kwargs):
 		if fileinput.isfirstline():
-			if not curFileBuffer:
-				# This is the first line of the first file.
-				curFileBuffer = StringIO.StringIO()
-				curFileBuffer.write(line)
-			else:
-				# This is a new file that is not the first file, return the previous file buffer.
-				contents = curFileBuffer.getvalue()
-				curFileBuffer.close()
-				curFileBuffer = None
-				# We cannot include the filename becuase of how fileinput.filename() works.
-				yield contents
-				curFileBuffer = StringIO.StringIO()
-				curFileBuffer.write(line)
-				# fileinput.nextfile() # This breaks stuff, but I feel like it belongs.
-		else:
-			# Just some line in the current file, write line to buffer.
-			curFileBuffer.write(line)
-	contents = curFileBuffer.getvalue()
-	curFileBuffer.close()
-	curFileBuffer = None
-	fileinput.close() # Is this really needed?
-	yield contents
+			try:
+				fname, fhandle = d.pop()
+				yield fname, fhandle.getvalue()
+			except IndexError:
+				pass
+			d.append((fileinput.filename(), StringIO.StringIO()))
+			buf = d[-1][1]
+		buf.write(line)
+		
+	fname, fhandle = d.pop()
+	yield fname, fhandle.getvalue()
 
 def setUpOptionParser():
 	"""docstring for setUpOptionParser"""
@@ -63,6 +48,7 @@ def setUpOptionParser():
 	parser.set_defaults(filename=sys.stdin)
 	parser.set_defaults(verbose=False)
 	parser.set_defaults(show_labels=False)
+	parser.set_defaults(no_show=False)
 	parser.set_defaults(ignore_exceptions=False)
 	parser.set_defaults(step_through=False)
 	
@@ -87,6 +73,9 @@ def setUpOptionParser():
 	parser.add_option("--show-labels",
 		action="store_false", dest="show_labels",
 		help="pretty print PDS labels [default=%default]")
+	parser.add_option("--no-show",
+		action="store_true", dest="no_show",
+		help="do not show the image onscreen [default=%default]")
 	parser.add_option("--step-through",
 		action="store_true", dest="step_through",
 		help="step through input files incrementally on user input [default=%default]")
@@ -102,7 +91,7 @@ if __name__ == '__main__':
 		parser.error("you must specifiy at least one input file argument")
 		
 	extractor = ImageExtractor(log=options.log)
-	for pdsContents in gfiles(args, "rb"):
+	for pdsFilename, pdsContents in gfiles(files=args, mode="rb"):
 		pdsFile = StringIO.StringIO(pdsContents)
 		
 		if options.step_through:
@@ -110,7 +99,7 @@ if __name__ == '__main__':
 			raw_input()
 			
 		if options.verbose:
-			errorMessage = "Reading input from '%s'\n" % (pdsFile)
+			errorMessage = "Reading input from '%s'\n" % (pdsFilename)
 			sys.stderr.write(errorMessage)
 		
 		img = None
@@ -119,18 +108,19 @@ if __name__ == '__main__':
 		except:
 			if options.ignore_exceptions:
 				if options.verbose:
-					errorMessage = "Warn: Caught exception raised during extraction of '%s', ignoring\n" % (pdsFile)
+					errorMessage = "Warn: Caught exception raised during extraction from '%s', ignoring\n" % (pdsFilename)
 					sys.stderr.write(errorMessage)
 			else:
-				# If not ignoring caught exceptions, re-raise
+				# If not ignoring caught exceptions, re-raise.
 				raise
 			
 		if not img:
-			errorMessage = "Error: Could not extract image from %s\n" % (options.filename)
+			errorMessage = "Error: Could not extract image from '%s': no image found\n" % (pdsFilename)
 			sys.stderr.write(errorMessage)
 		else:
 			if options.show_labels:
 				import pprint
 				pprint.pprint(labels)
-			img.show()
+			if not options.no_show:
+				img.show()
 			
