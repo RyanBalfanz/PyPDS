@@ -198,13 +198,13 @@ class ImageExtractorTests(unittest.TestCase):
 			for name in files:
 				filename = os.path.join(root, name)
 				print filename
-				img = imgExtractor.extract(open_pds(filename))
+				img, _ = imgExtractor.extract(open_pds(filename))
 				try:
+					if img:
 						img.save(outputDir + name + '.jpg')
 				except Exception, e:
 					# Re-raise the exception, causing this test to fail.
-					#raise
-					pass
+					raise
 				else:
 					# The following is executed if and when control flows off the end of the try clause.
 					assert True
