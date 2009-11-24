@@ -105,6 +105,7 @@ class ImageExtractor(ExtractorBase):
 			img = Image.frombuffer('L', dim, rawImageData, 'raw', 'L', 0, 1)
 			if self.log: self.log.debug("Image result: %s" % (str(img)))
 			if self.log: self.log.debug("Image info: %s" % (str(img.info)))
+			if self.log: self.log.debug("Image mode: %s" % (str(img.mode)))
 			if self.log: self.log.debug("Image size: %s" % (str(img.size)))
 		else:
 			if self.log: self.log.error("Image is not supported '%s'" % (source))
