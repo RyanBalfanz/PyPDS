@@ -94,10 +94,11 @@ class ImageExtractor(ExtractorBase):
 			if self.log: self.log.debug("Image dimensions should be %s" % (str(dim)))
 			if self.log: self.log.debug("Seeking to image data at %d" % (loc))
 			f.seek(loc)
-			if self.log: self.log.debug("Seek successful, reading data")
+			readSize = dim[0] * dim[1]
+			if self.log: self.log.debug("Seek successful, reading data (%s)" % (readSize))
 			# rawImageData = f.readline()
 			# f.seek(-int(self.labels["RECORD_BYTES"]), os.SEEK_CUR)
-			rawImageData = f.read(dim[0] * dim[1])
+			rawImageData = f.read(readSize)
 			if self.log: self.log.debug("Read successful (len: %d), creating Image object" % (len(rawImageData)))
 			# The frombuffer defaults may change in a future release;
 			# for portability, change the call to read:
