@@ -114,7 +114,7 @@ class Parser(object):
 			
 	def parse(self, source):
 		"""Parse the source PDS data."""
-		if self.log: self.log.debug("Parsing '%s'" % (source.name,))
+		# if self.log: self.log.debug("Parsing '%s'" % (source.name,))
 		self._labels = self._parse_header(source)
 		if self.log: self.log.debug("Parsed %d top-level labels" % (len(self._labels)))
 		return self._labels
