@@ -1,0 +1,45 @@
+PDS_VERSION_ID          = PDS3                                                
+                                                                              
+RECORD_TYPE             = FIXED_LENGTH                                        
+RECORD_BYTES            = 120                                                 
+FILE_RECORDS            = 331                                                 
+^TABLE                  = "110KMIN.TAB"                                       
+PRODUCT_ID              = "ODYSSEY_ALTITUDE_110KM_INBOUND"                    
+INSTRUMENT_HOST_NAME    = "MARS ODYSSEY"                                      
+INSTRUMENT_NAME         = "ACCELEROMETER"                                     
+DATA_SET_ID             = "ODY-M-ACCEL-5-ALTITUDE-V1.0"                       
+TARGET_NAME             = MARS                                                
+PRODUCT_CREATION_TIME   = 2002-08-01                                          
+START_TIME              = "UNK"                                               
+STOP_TIME               = "UNK"                                               
+                                                                              
+SPACECRAFT_CLOCK_START_COUNT     = "UNK"                                      
+SPACECRAFT_CLOCK_STOP_COUNT      = "UNK"                                      
+                                                                              
+OBJECT                  = TABLE                                               
+ ROWS                   = 331                                                 
+ ROW_BYTES              = 120                                                 
+ INTERCHANGE_FORMAT     = ASCII                                               
+ COLUMNS                = 15                                                  
+ ^STRUCTURE             = "ODYACCIN.FMT"                                      
+ DESCRIPTION            = "                                                   
+  This table contains atmospheric data at constant altitude.  Each row gives  
+  characteristics at 110 km inbound altitude for each aerobraking orbit. The  
+  values in this table are derived from '100 point running means'. These are  
+  99-second running means over the entire aerobraking pass and then           
+  interpolated to reference altitudes by doing a least square fit to the      
+  reference altitude +- 5 km vs log(density) to obtain density and scale      
+  height at the reference altitude (110 km).                                  
+  The columns from one to fifteen are separated as follows:  orbit number,    
+  UTC time of periapsis, L_s (deg), altitude (km), periapsis altitude (km),   
+  latitude (deg), east longitude (deg), local solar time (hr), solar zenith   
+  angle (deg), density (kg/km**3), sigma density (kg/km**3), estimated        
+  temperature (K), density scale height (km), sigma density scale height (km) 
+  and 'rms', the root mean squared of the differences between the least       
+  square fit of the densities (+- 5 km from the reference altitude)           
+  to the actual (99-second running mean) densities.                           
+                                                                              
+  "                                                                           
+                                                                              
+END_OBJECT              = TABLE                                               
+END                                                                           

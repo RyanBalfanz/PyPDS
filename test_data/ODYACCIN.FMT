@@ -1,0 +1,147 @@
+ OBJECT                 = COLUMN
+  NAME                  = "ORBIT NUMBER"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "N/A"
+  START_BYTE            = 1
+  BYTES                 = 6
+  FORMAT                = "F6.3"
+ END_OBJECT             = COLUMN
+ 
+ OBJECT                 = COLUMN
+  NAME                  = "UTC TIME OF PERIAPSIS"
+  DATA_TYPE             = TIME
+  UNIT                  = "N/A"
+  START_BYTE            = 8
+  BYTES                 = 20
+  FORMAT                = "A20"
+  INVALID_CONSTANT      = 0000-000T00:00:00.00
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "LONGITUDE OF THE SUN"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "DEGREES"
+  START_BYTE            = 29
+  BYTES                 = 6
+  FORMAT                = "F6.2"
+  INVALID_CONSTANT      = 0.0000
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "AREODETIC ALTITUDE"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "KILOMETERS"
+  START_BYTE            = 36
+  BYTES                 = 6
+  FORMAT                = "F6.2"
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "PERIAPSIS AREODETIC ALTITUDE"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "KILOMETERS"
+  START_BYTE            = 43
+  BYTES                 = 6
+  FORMAT                = "F6.3"
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "LATITUDE"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "DEGREES"
+  START_BYTE            = 50
+  BYTES                 = 6
+  FORMAT                = "F6.3"
+  INVALID_CONSTANT      = 0.0000
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "EAST LONGITUDE"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "DEGREES"
+  START_BYTE            = 57
+  BYTES                 = 6
+  FORMAT                = "F6.3"
+  INVALID_CONSTANT      = 0.0000
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "LOCAL SOLAR TIME"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "HOURS"
+  START_BYTE            = 64
+  BYTES                 = 6
+  FORMAT                = "F6.3"
+  INVALID_CONSTANT      = 0.0000
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "SOLAR ZENITH ANGLE"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "DEGREES"
+  START_BYTE            = 71
+  BYTES                 = 6
+  FORMAT                = "F6.3"
+  INVALID_CONSTANT      = 0.0000
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "DENSITY"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "KG/KM**3"
+  START_BYTE            = 78
+  BYTES                 = 6
+  FORMAT                = "F6.3"
+  INVALID_CONSTANT      = 0.0000
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "SIGMA DENSITY"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "KG/KM**3"
+  START_BYTE            = 85
+  BYTES                 = 6
+  FORMAT                = "F6.3"
+  INVALID_CONSTANT      = 0.0000
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "TEMPERATURE"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "K"
+  START_BYTE            = 92
+  BYTES                 = 6
+  FORMAT                = "F6.3"
+  INVALID_CONSTANT      = 0.0000
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "SCALE HEIGHT"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "KM"
+  START_BYTE            = 99
+  BYTES                 = 6
+  FORMAT                = "F6.3"
+  INVALID_CONSTANT      = 0.0000
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "SIGMA SCALE HEIGHT"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "KM"
+  START_BYTE            = 106
+  BYTES                 = 6
+  FORMAT                = "F6.3"
+  INVALID_CONSTANT      = 0.0000
+ END_OBJECT             = COLUMN
+
+ OBJECT                 = COLUMN
+  NAME                  = "RMS"
+  DATA_TYPE             = ASCII_REAL
+  UNIT                  = "KM"
+  START_BYTE            = 113
+  BYTES                 = 6
+  FORMAT                = "F6.3"
+  INVALID_CONSTANT      = 0.0000
+ END_OBJECT             = COLUMN
+
