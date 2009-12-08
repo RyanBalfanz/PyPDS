@@ -17,6 +17,28 @@ PDS_END_OF_LINE = r"\r\n"
 PDS_END_OF_HEADER = r"END"
 PDS_CONTAINERS = {"OBJECT":"END_OBJECT", "GROUP":"END_GROUP"}
 
+def isValidPDSFile(filename):
+	"""Check if a PDS file is valid by performing a series of mini-checks.
+	
+	The following check are performed
+		* Filesize is equal to (RECORD_BYTES * FILE_RECORDS),
+		based afrigeri's comment to issue 3 (http://github.com/RyanBalfanz/PyPDS/issues/#issue/3).
+		Note that this check creates it's own Parser instance, for only two lookups.
+	"""
+	# Filesize check
+	import os
+	fileBytes = os.path.getsize(filename)
+	from parser import Parser
+	parser = Parser()
+	labels = parser.parse(open_pds(filename))
+	expectedFileBytes = int(labels["FILE_RECORDS"]) * int(labels["RECORD_BYTES"])
+	
+	validityChecks = (# lambda : True, # lambda : False,
+		lambda : fileBytes == expectedFileBytes and True or False,)
+	checkVals = (check() for check in validityChecks)
+	
+	return False not in checkVals
+
 def open_pds(source):
 	"""Open a PDS data file source (flexibly).
 	
@@ -71,3 +93,5 @@ def open_pds(source):
 
 if __name__ == '__main__':
 	pass
+	
+	print isValidPDSFile("../../../test_data/pds.img")
