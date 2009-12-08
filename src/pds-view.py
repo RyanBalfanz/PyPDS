@@ -71,7 +71,7 @@ def setUpOptionParser():
 		action="store", dest="log",
 		help="optional log filename, .log extension will be added", metavar="FILE")
 	parser.add_option("--show-labels",
-		action="store_false", dest="show_labels",
+		action="store_true", dest="show_labels",
 		help="pretty print PDS labels [default=%default]")
 	parser.add_option("--no-show",
 		action="store_true", dest="no_show",
