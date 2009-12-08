@@ -94,4 +94,3 @@ def open_pds(source):
 if __name__ == '__main__':
 	pass
 	
-	print isValidPDSFile("../../../test_data/pds.img")
