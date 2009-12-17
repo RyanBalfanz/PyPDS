@@ -18,9 +18,23 @@ import Image
 
 from core.common import open_pds
 from core.parser import Parser
-from core.extractorbase import ExtractorBase
+from core.extractorbase import ExtractorBase, ExtractorError
 
 
+class ImageExtractorError(ExtractorError):
+	"""Base class for exceptions in this module."""
+
+	def __init__(self, *args, **kwargs):
+		super(ExtractorError, self).__init__(*args, **kwargs)
+		
+		
+class ChecksumError(ImageExtractorError):
+	"""Error raised when verification of a secure hash fails."""
+
+	def __init__(self, *args, **kwargs):
+		super(ChecksumError, self).__init__(*args, **kwargs)
+		
+		
 class ImageExtractor(ExtractorBase):
 	"""Extract an image embedded within a PDS file.
 	
