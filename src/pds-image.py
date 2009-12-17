@@ -123,7 +123,10 @@ if __name__ == '__main__':
 				sep = "\n"
 				width, height = img.size
 				imgString = img.tostring()
+				# import base64
+				# imgString = base64.b64encode(img.tostring())
 				imgBytes = len(imgString)
 				dispVars = [width, height, imgBytes, imgString]
 				sys.stdout.write(sep.join(map(str, dispVars)))
-				
+			# sys.stdout.flush()
+			
