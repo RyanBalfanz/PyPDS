@@ -120,7 +120,7 @@ class ImageExtractor(ExtractorBase):
 		SUPPORTED = {}
 		SUPPORTED['RECORD_TYPE'] = 'FIXED_LENGTH',
 		SUPPORTED['SAMPLE_BITS'] = 8,
-		SUPPORTED['SAMPLE_TYPE'] = 'UNSIGNED_INTEGER', 'MSB_UNSIGNED_INTEGER'
+		SUPPORTED['SAMPLE_TYPE'] = 'UNSIGNED_INTEGER', 'MSB_UNSIGNED_INTEGER', 'LSB_INTEGER'
 				
 		if not self.labels.has_key('IMAGE'):
 			if self.log: self.log.warn("No image data found")
@@ -132,15 +132,15 @@ class ImageExtractor(ExtractorBase):
 
 		if recordType not in SUPPORTED['RECORD_TYPE']:
 			errorMessage = ("RECORD_TYPE '%s' is not supported") % (recordType)
-			#raise NotImplementedError(errorMessage)
+			# raise NotImplementedError(errorMessage)
 			return False
 		if imageSampleBits not in SUPPORTED['SAMPLE_BITS']:
 			errorMessage = ("SAMPLE_BITS '%s' is not supported") % (imageSampleBits)
-			#raise NotImplementedError(errorMessage)
+			# raise NotImplementedError(errorMessage)
 			return False
 		if imageSampleType not in SUPPORTED['SAMPLE_TYPE']:
 			errorMessage = ("SAMPLE_TYPE '%s' is not supported") % (imageSampleType)
-			#raise NotImplementedError(errorMessage)
+			# raise NotImplementedError(errorMessage)
 			return False
 			
 		return True
