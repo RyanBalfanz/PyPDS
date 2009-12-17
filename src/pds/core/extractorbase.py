@@ -12,6 +12,13 @@ Copyright (c) 2009 Ryan Matthew Balfanz. All rights reserved.
 import unittest
 
 
+class ExtractorError(Exception):
+	"""Base class for exceptions in this module."""
+
+	def __init__(self, *args, **kwargs):
+		super(ExtractorError, self).__init__(*args, **kwargs)
+
+
 class ExtractorBase(object):
 	"""The base class from with various extractors shall derive.
 	
