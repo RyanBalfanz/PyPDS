@@ -198,6 +198,28 @@ class ImageExtractor(ExtractorBase):
 			raise ValueError(errorMessage)
 		return imageLocation
 		
+	def _get_image_checksum(self):
+		"""Return the md5 checksum of the image.
+		
+		The checksum is retrieved from self.labels['IMAGE']['MD5_CHECKSUM'].
+		This may raise a KeyError.
+		"""
+		ignoreKeyError = True
+		
+		md5Checksum = None
+		try:
+			md5Checksum = self.labels['IMAGE']["MD5_CHECKSUM"]
+		except KeyError:
+			if self.log: self.log.debug("Did not find md5 checksum")
+			if not ignoreKeyError:
+				raise
+			pass
+		else:
+			if self.log: self.log.debug("Found md5 checksum")
+			md5Checksum = md5Checksum[1:-1]
+			
+		return md5Checksum
+		
 		
 class ImageExtractorTests(unittest.TestCase):
 	"""Unit tests for class ImageExtractor"""
