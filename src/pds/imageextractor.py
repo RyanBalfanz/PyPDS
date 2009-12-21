@@ -179,6 +179,8 @@ class ImageExtractor(ExtractorBase):
 		
 		If the units are given along with the value, they must be <BYTES>.
 		The image location is given by the value.
+		
+		This may raise a ValueError.
 		"""
 		imagePointer = self.labels['^IMAGE'].split()
 		if len(imagePointer) == 1:
