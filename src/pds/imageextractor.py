@@ -9,6 +9,7 @@ Copyright (c) 2009 Ryan Matthew Balfanz. All rights reserved.
 """
 
 
+import hashlib
 import logging
 import os
 import sys
@@ -105,6 +106,7 @@ class ImageExtractor(ExtractorBase):
 			if self.log: self.log.debug("Image in '%s' is supported" % (source))
 			dim = self._get_image_dimensions()
 			loc = self._get_image_location()
+			md5Checksum = self._get_image_checksum()
 			if self.log: self.log.debug("Image dimensions should be %s" % (str(dim)))
 			if self.log: self.log.debug("Seeking to image data at %d" % (loc))
 			f.seek(loc)
@@ -113,6 +115,15 @@ class ImageExtractor(ExtractorBase):
 			# rawImageData = f.readline()
 			# f.seek(-int(self.labels["RECORD_BYTES"]), os.SEEK_CUR)
 			rawImageData = f.read(readSize)
+			if md5Checksum:
+				rawImageChecksum = hashlib.md5(rawImageData).hexdigest()
+				checksumVerificationPassed = rawImageChecksum == md5Checksum and True or False
+				if not checksumVerificationPassed:
+					if self.log: self.log.debug("Secure hash verification failed")
+					errorMessage = "Verification failed! Expected '%s' but got '%s'." % (md5Checksum, rawImageChecksum)
+					raise ChecksumError, errorMessage
+				else:
+					if self.log: self.log.debug("Secure hash verification passed")
 			if self.log: self.log.debug("Read successful (len: %d), creating Image object" % (len(rawImageData)))
 			# The frombuffer defaults may change in a future release;
 			# for portability, change the call to read:
