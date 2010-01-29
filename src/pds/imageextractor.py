@@ -29,6 +29,12 @@ class ImageExtractorError(ExtractorError):
 		super(ExtractorError, self).__init__(*args, **kwargs)
 		
 		
+class ImageNotSupportedError(object):
+	"""docstring for ImageNotSupportedError"""
+	def __init__(self):
+		super(ImageNotSupportedError, self).__init__()
+		
+		
 class ChecksumError(ImageExtractorError):
 	"""Error raised when verification of a secure hash fails."""
 
