@@ -169,7 +169,7 @@ class ImageExtractor(ExtractorBase):
 				
 		if not self.labels.has_key('IMAGE'):
 			if self.log: self.log.warn("No image data found")
-				imageIsSupported = False
+			imageIsSupported = False
 			
 		recordType = self.labels['RECORD_TYPE']
 		imageSampleBits = int(self.labels['IMAGE']['SAMPLE_BITS'])
