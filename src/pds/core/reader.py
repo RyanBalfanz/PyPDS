@@ -26,7 +26,7 @@ import unittest
 class Reader(object):
 	"""Read a PDS formatted file into meaningful (*key*, *value*) pairs.
 	
-	Instances are reusable; multiple files may by read consecutively.
+	Instances of this class are reusable; multiple files may by read consecutively.
 	
 	A key is denoted by a token immediately before a '=' character 
 	and a value by joining of all tokens preceding the next key.
@@ -40,7 +40,7 @@ class Reader(object):
 	Future versions may do away with assertions altogether and utilize the logging facility.
 	Logging is not very mature at this stage, but usable.
 	In might be convenient to also return metadata about each (key, value) pair 
- 	such as the linenumber(s) associated with it. This would make mean not discarding whitespace and comments.
+	such as the linenumber(s) associated with it. This would make mean not discarding whitespace and comments.
 
 	Notes: See http://personalpages.tds.net/~kent37/kk/00004.html. Maybe?
 	
