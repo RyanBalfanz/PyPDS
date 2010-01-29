@@ -13,18 +13,18 @@ import unittest
 
 
 class ExtractorError(Exception):
-	"""Base class for exceptions in this module."""
+	"""Base class for exceptions raised by ``ExtractorBase`` and its subclasses."""
 
 	def __init__(self, *args, **kwargs):
 		super(ExtractorError, self).__init__(*args, **kwargs)
 
 
 class ExtractorBase(object):
-	"""The base class from with various extractors shall derive.
+	"""The base class from which various extractors shall derive.
 	
-	Programs may define their own extractors by creating a new extractor
+	Programs may define their own extractors by creating a new extractor.
 	
-	Subclasses shall override the extract method, otherwise a NotImplementedError is raised.
+	Any subclass should override the ``extract`` method, otherwise a NotImplementedError is raised.
 	"""
 	def __init__(self, *args, **kwargs):
 		super(ExtractorBase, self).__init__(*args, **kwargs)
@@ -41,7 +41,7 @@ class ExtractorTests(unittest.TestCase):
 		self.eb = ExtractorBase()
 		
 	def test_not_implemented(self):
-		"""Method extract() must be overloaded"""
+		"""Method ``extract`` must be overloaded"""
 		self.assertRaises(NotImplementedError, self.eb.extract)
 
 
