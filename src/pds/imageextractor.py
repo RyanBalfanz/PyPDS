@@ -68,12 +68,22 @@ class ImageExtractor(ExtractorBase):
 	>>> 	print "The image was not supported."
 	"""
 	
-	def __init__(self, log=None):
+	def __init__(self, log=None, raisesChecksumError=True, raisesImageNotSupportedError=True):
 		super(ImageExtractor, self).__init__()
 		
 		self.log = log
+		self.raisesChecksumError = raisesChecksumError
+		self.raisesImageNotSupportedError = raisesImageNotSupportedError
 		if log:
-			self._init_logging()	
+			self._init_logging()
+		# self.fh = None
+		# self.imageDimensions = None
+		
+		# self.PILSettings = {}
+		# self.PILSettings["mode"] = "L"
+		# self.PILSettings["decoder"] = "raw"
+		
+		# self.verifySecureHash = True
 
 	def _init_logging(self):
 		"""Initialize logging."""
@@ -126,8 +136,9 @@ class ImageExtractor(ExtractorBase):
 				checksumVerificationPassed = rawImageChecksum == md5Checksum and True or False
 				if not checksumVerificationPassed:
 					if self.log: self.log.debug("Secure hash verification failed")
-					errorMessage = "Verification failed! Expected '%s' but got '%s'." % (md5Checksum, rawImageChecksum)
-					raise ChecksumError, errorMessage
+					if self.raisesChecksumError:
+						errorMessage = "Verification failed! Expected '%s' but got '%s'." % (md5Checksum, rawImageChecksum)
+						raise ChecksumError, errorMessage
 				else:
 					if self.log: self.log.debug("Secure hash verification passed")
 			if self.log: self.log.debug("Read successful (len: %d), creating Image object" % (len(rawImageData)))
@@ -153,10 +164,12 @@ class ImageExtractor(ExtractorBase):
 		SUPPORTED['RECORD_TYPE'] = 'FIXED_LENGTH',
 		SUPPORTED['SAMPLE_BITS'] = 8,
 		SUPPORTED['SAMPLE_TYPE'] = 'UNSIGNED_INTEGER', 'MSB_UNSIGNED_INTEGER', 'LSB_INTEGER'
+		
+		imageIsSupported = True
 				
 		if not self.labels.has_key('IMAGE'):
 			if self.log: self.log.warn("No image data found")
-			return False
+				imageIsSupported = False
 			
 		recordType = self.labels['RECORD_TYPE']
 		imageSampleBits = int(self.labels['IMAGE']['SAMPLE_BITS'])
@@ -164,18 +177,21 @@ class ImageExtractor(ExtractorBase):
 
 		if recordType not in SUPPORTED['RECORD_TYPE']:
 			errorMessage = ("RECORD_TYPE '%s' is not supported") % (recordType)
-			# raise NotImplementedError(errorMessage)
-			return False
+			if self.raisesImageNotSupportedError:
+				raise ImageNotSupportedError(errorMessage)
+			imageIsSupported = False
 		if imageSampleBits not in SUPPORTED['SAMPLE_BITS']:
 			errorMessage = ("SAMPLE_BITS '%s' is not supported") % (imageSampleBits)
-			# raise NotImplementedError(errorMessage)
-			return False
+			if self.raisesImageNotSupportedError:
+				raise ImageNotSupportedError(errorMessage)
+			imageIsSupported = False
 		if imageSampleType not in SUPPORTED['SAMPLE_TYPE']:
 			errorMessage = ("SAMPLE_TYPE '%s' is not supported") % (imageSampleType)
-			# raise NotImplementedError(errorMessage)
-			return False
+			if self.raisesImageNotSupportedError:
+				raise ImageNotSupportedError(errorMessage)
+			imageIsSupported = False
 			
-		return True
+		return imageIsSupported
 			
 	def _get_image_dimensions(self):
 		"""Return the dimensions of the image as (width, height).
