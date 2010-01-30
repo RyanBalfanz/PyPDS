@@ -13,6 +13,14 @@ Several command line tools are also available for viewing labels and image conte
 Installation
 ============
 
-Grab a copy of the code from GitHub
+This section needs attention.
+
+Grab a copy of the code from GitHub.
 
 .. _Examples:
+Examples
+========
+
+This section needs attention.
+
+There are many examples in the documentation. 
