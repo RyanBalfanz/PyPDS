@@ -16,7 +16,7 @@ Overview
 ========
 
 PyPDS is a python interface to `Planetary Data System <http://pds.jpl.nasa.gov/>`_ (PDS) data products.
-For more information please visit the `PyPDS Wiki <http://wiki.github.com/RyanBalfanz/PyPDS/>`_ and the Sphyinx documentation included in the source.
+For more information please visit the `PyPDS Wiki <http://wiki.github.com/RyanBalfanz/PyPDS/>`_ and the Sphinx documentation included in the source.
 
 .. _Installation:
 
