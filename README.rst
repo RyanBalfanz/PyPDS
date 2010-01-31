@@ -5,7 +5,7 @@ PyPDS
 - Overview_
 - Installation_
 - Examples_
-_ CommandLineTools_
+- CommandLineTools_
 
 This python package is suitable for working with Planetary Data System (PDS) data products in your own projects.
 
