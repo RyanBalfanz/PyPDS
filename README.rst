@@ -49,3 +49,82 @@ Examples
 This section needs attention.
 
 There are many examples in the documentation.
+
+Working with labels
+-------------------
+
+Before we may do anything, let's import some modules.
+
+>>> import pprint
+>>> from pds.core.common import open_pds
+>>> from pds.core.parser import Parser
+
+If we are to get all the labels from a PDS file, we'll need a Parser object.
+
+>>> parser = Parser()
+
+Now we use use it's ``parse`` method on a file. The file should first be opened with ``open_pds``.
+
+>>> labels = parser.parse(open_pds("../test_data/pds.img"))
+
+The return object is just a dictionary. Let's take a look.
+
+>>> pprint.pprint(labels.keys()) # Inspect the top-level labels.
+['IMAGE_HISTOGRAM',
+ 'IMAGE_MAP_PROJECTION_CATALOG',
+ 'FILE_RECORDS',
+ 'IMAGE_ID',
+ 'TARGET_NAME',
+ 'SOURCE_IMAGE_ID',
+ 'IMAGE',
+ 'LABEL_RECORDS',
+ 'SPACECRAFT_NAME',
+ 'NOTE',
+ 'RECORD_TYPE',
+ 'CCSD3ZF0000100000001NJPL3IF0PDS200000001',
+ '^IMAGE',
+ 'INSTRUMENT_NAME',
+ '^IMAGE_HISTOGRAM',
+ 'DATA_SET_ID',
+ 'RECORD_BYTES']
+
+Some of the labels contain other labels, which are also dictionary objects.
+
+>>> pprint.pprint(labels["IMAGE"]) # Inspect the image labels.
+{'CHECKSUM': '12054227',
+ 'LINES': '320',
+ 'LINE_SAMPLES': '306',
+ 'SAMPLE_BITS': '8',
+ 'SAMPLE_BIT_MASK': '2#11111111#',
+ 'SAMPLE_TYPE': 'UNSIGNED_INTEGER'}
+
+Working with the image
+----------------------
+
+PyPDS also takes care of the details about creating image objects. Behind the scenes all images are instances of PIL's Image class.
+
+To get an image from a PDS file, create an ``ImageExtractor`` object and use its ``extract`` method. Don't forget to first open the PDS file.
+
+>>> from pds.core.common import open_pds
+>>> from pds.imageextractor import ImageExtractor
+>>> ie = ImageExtractor()
+>>> img, labels = ie.extract(open_pds("../test_data/pds.img"))
+
+The ``extract`` method first parses the file, then creates the image. Since it goes to the trouble of doing so anyway, it provides the label as a freebie, along with the image.
+
+Here, ``img`` is an instance of PIL's Image class. Do whatever you want to it.
+
+>>> print (img.mode, img.size)
+('L', (306, 320))
+>>> img.show() # Open the image in the default viewer.
+>>> img.save("pds.img.jpeg") # Write the image to disk in JPEG format.
+
+Verify that the returned image has the proper dimensions.
+
+>>> imageSize = map(int, \
+... (labels["IMAGE"]["LINE_SAMPLES"], \
+... labels["IMAGE"]["LINES"])) # Save the image dimensions with integers.
+>>> tuple(imageSize) == img.size # The built-in map returns a list, but Image.size is a tuple.
+True
+
+By the way, an ``Image`` has a ``show`` method which should happily open the image in your default viewer.
