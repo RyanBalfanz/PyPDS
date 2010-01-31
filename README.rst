@@ -5,6 +5,7 @@ PyPDS
 - Overview_
 - Installation_
 - Examples_
+_ CommandLineTools_
 
 This python package is suitable for working with Planetary Data System (PDS) data products in your own projects.
 
@@ -128,3 +129,25 @@ Verify that the returned image has the proper dimensions.
 True
 
 By the way, an ``Image`` has a ``show`` method which should happily open the image in your default viewer.
+
+.. _CommandLineTools:
+
+Command Line Tools
+==================
+
+Sometimes you might not want to interact with PDS files programmatically. PyPDS also comes with several tools which are handy for working with PDS files at the command line.
+
+Each has several options. For detailed information use ``--help``.
+
+pds-convert.py
+	Convert images to the specified format. 
+	
+pds-image.py
+	Like pds-convert.py but dump to standard output.
+	
+pds-labels.py	
+	Dump the labels to standard output.
+	
+pds-view.py
+	View an image contained in a PDS file in the default viewer.
+	
