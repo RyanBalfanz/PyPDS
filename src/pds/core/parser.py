@@ -63,7 +63,7 @@ class Parser(object):
 	Grouped labels are stored as nested dictionaries, nesting may be arbitrarily deep.
 	Internally, these groups are called *containers* and must be in {OBJECT, GROUP}.
 	
-	This module makes heavy use of assertions to find bugs and detect poorly formatted files.
+	This module makes use of assertions to find bugs and detect poorly formatted files.
 	As usual, when an assertion fails an AssertionError is raised. This type of behavior may not be desired 
 	or expected, since it will halt execution, especially when addressing multiple files in a production environment.
 	Assertions are not checked in -O mode, use that to temporarily override this behavior.
