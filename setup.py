@@ -17,4 +17,5 @@ setup(name='PyPDS',
 	url='http://github.com/RyanBalfanz/PyPDS',
 	package_dir={'': 'src'},
 	packages=['pds', 'pds.core'],
+	scripts=['bin/pds-labels.py', 'bin/pds-image.py', 'bin/pds-view.py', 'bin/pds-convert.py'],
 	)
