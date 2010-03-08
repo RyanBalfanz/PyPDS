@@ -101,7 +101,7 @@ if __name__ == '__main__':
 		if options.verbose:
 			errorMessage = "Reading input from '%s'\n" % (pdsFilename)
 			sys.stderr.write(errorMessage)
-		
+			
 		img = None
 		try:
 			img, labels = extractor.extract(pdsFile)
@@ -113,7 +113,7 @@ if __name__ == '__main__':
 			else:
 				# If not ignoring caught exceptions, re-raise.
 				raise
-			
+				
 		if not img:
 			errorMessage = "Error: Could not extract image from '%s': no image found\n" % (pdsFilename)
 			sys.stderr.write(errorMessage)
@@ -123,4 +123,4 @@ if __name__ == '__main__':
 				pprint.pprint(labels)
 			if not options.no_show:
 				img.show()
-			
+				
