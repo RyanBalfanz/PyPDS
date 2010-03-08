@@ -182,8 +182,8 @@ class ParserTests(unittest.TestCase):
 			for name in files:
 				filename = os.path.join(root, name)
 				try:
-					pdsparser.parse(open_pds(filename))
-					labels = pdsparser.labels
+					labels = pdsparser.parse(open_pds(filename))
+					# labels = pdsparser.labels # Old usage, depriciated.
 				except Exception, e:
 					# Re-raise the exception, causing this test to fail.
 					raise
@@ -193,12 +193,12 @@ class ParserTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
-	unittest.main()
+	#unittest.main()
 		
 	from common import open_pds
 	filename = '../../../test_data/FHA01118.LBL'
 	pdsparser = Parser()
-	pdsparser.parse(open_pds(filename))
-	labels = pdsparser.labels
+	labels = pdsparser.parse(open_pds(filename))
+	# labels = pdsparser.labels # Old usage, depriciated.
 	print labels.keys()
 	print labels['IMAGE END']
