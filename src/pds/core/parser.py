@@ -27,8 +27,14 @@ class ParserError(Exception):
 
 	def __init__(self, *args, **kwargs):
 		super(ParserError, self).__init__(*args, **kwargs)
-
-
+		
+		
+class DuplicateKeyError(ParserError):
+	"""docstring for DuplicateKeyError"""
+	def __init__(self, *args, **kwargs):
+		super(DuplicateKeyError, self).__init__(*args, **kwargs)
+		
+		
 class IOError(ParserError):
 	"""Exception raised on I/O errors in this module."""
 
