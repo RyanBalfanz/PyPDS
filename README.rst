@@ -31,14 +31,14 @@ The following will place a directory called PyPDS in your working directory.
 
 	git clone git://github.com/RyanBalfanz/PyPDS.git
 	
-For instant gratification, change to the PyPDS/src directory and fire up a Python interpreter.
+For instant gratification, change to the PyPDS/ directory and fire up a Python interpreter.
 
-	cd PyPDS/src
+	cd PyPDS/
 	python
 	
-From there you should be able to start playing with PyPDS and the included test files.
+From there you should be able to start playing with PyPDS and the some test files (several are available in Downloads).
 	
-Or, if you'd like to install PyPDS system wide, first grab a copy of the code as above. Then install with distutils.
+Or, if you'd like to install PyPDS system wide, first grab a copy of the code as above. Then install with distutils. PyPDS isn't yet on PyPI, but soon.
 
 	python setup.py install
 
@@ -47,9 +47,7 @@ Or, if you'd like to install PyPDS system wide, first grab a copy of the code as
 Examples
 ========
 
-This section needs attention.
-
-There are many examples in the documentation.
+First, you may want to run tests.py to verify that things seem to be working. That files was based on the interacitve examples below. There are more examples in the documentation.
 
 Working with labels
 -------------------
