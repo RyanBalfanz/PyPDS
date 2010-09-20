@@ -38,7 +38,7 @@ For instant gratification, change to the PyPDS/ directory and fire up a Python i
 	
 From there you should be able to start playing with PyPDS and the some test files (several are available in Downloads).
 	
-Or, if you'd like to install PyPDS system wide, first grab a copy of the code as above. Then install with distutils. PyPDS isn't yet on PyPI, but soon.
+Or, if you'd like to install PyPDS system wide, first grab a copy of the code as above. Then install with distutils. PyPDS is on PyPI (http://pypi.python.org/pypi/PyPDS) but not yet easy_install/pip installable.
 
 	python setup.py install
 
