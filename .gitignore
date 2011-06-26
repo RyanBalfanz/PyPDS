@@ -3,3 +3,4 @@ src/doc/.build/
 
 *.pyc
 *.log
+*.IMG
