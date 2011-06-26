@@ -11,7 +11,7 @@ from distutils.core import setup
 
 setup(
 	name='PyPDS',
-	version='0.1',
+	version='1.0.1',
 	description='PyPDS is a Python interface to Planetary Data System (PDS) data products',
 	author='Ryan Balfanz',
 	author_email='ryan@ryanbalfanz.net',
