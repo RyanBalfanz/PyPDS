@@ -15,8 +15,11 @@ import os
 import sys
 import unittest
 
-import Image
-
+try:
+	import Image
+except ImportError:
+		from PIL import Image
+	
 from core.common import open_pds
 from core.parser import Parser
 from core.extractorbase import ExtractorBase, ExtractorError

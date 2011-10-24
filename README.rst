@@ -3,6 +3,7 @@ PyPDS
 =====
 
 - Overview_
+- Documentation_
 - Installation_
 - Examples_
 - CommandLineTools_
@@ -19,28 +20,31 @@ Overview
 PyPDS is a python interface to `Planetary Data System <http://pds.jpl.nasa.gov/>`_ (PDS) data products.
 For more information please visit the `PyPDS Wiki <http://wiki.github.com/RyanBalfanz/PyPDS/>`_ and the Sphinx documentation included in the source.
 
+.. _Documentation:
+
+Documentation
+=============
+
+The `latest documentation <http://readthedocs.org/docs/pypds/en/latest/>`_ is available on Read the Docs.
+
 .. _Installation:
 
 Installation
 ============
 
+#. Install PIL
 
-An easy way to get started using PyPDS is to clone its GitHub repository. The repository includes a directory containing some example PDS files to work with.
+#. Install PyPDS
 
-The following will place a directory called PyPDS in your working directory.
+	* From the Python Package Index
 
-	git clone git://github.com/RyanBalfanz/PyPDS.git
-	
-For instant gratification, change to the PyPDS/ directory and fire up a Python interpreter.
+		pip install PyPDS
 
-	cd PyPDS/
-	python
-	
-From there you should be able to start playing with PyPDS and the some test files (several are available in Downloads).
-	
-Or, if you'd like to install PyPDS system wide, first grab a copy of the code as above. Then install with distutils. PyPDS is on PyPI (http://pypi.python.org/pypi/PyPDS) but not yet easy_install/pip installable.
+	* From the GitHub repository
 
-	python setup.py install
+		git clone git://github.com/RyanBalfanz/PyPDS.git
+
+If you want to contribute, consider creating your own fork and submitting a pull request.
 
 .. _Examples:
 
