@@ -19,7 +19,7 @@ class untitledTests(unittest.TestCase):
 	def setUp(self):
 		self.parser = Parser()
 		self.imageExtractor = ImageExtractor()
-		self.testImagePath = "./I18584006BTR.IMG"
+		self.testImagePath = "../test_data/I18584006BTR.IMG"
 		assert os.path.exists(self.testImagePath)
 		
 	def test_open_pds(self):
