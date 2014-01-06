@@ -39,9 +39,11 @@ Installation
 	* From the Python Package Index
 
 		pip install PyPDS
-		(Note that starting from pip version >= 1.4 you need to include the --pre(-release) 
+		
+		Note that starting from pip version >= 1.4 you need to include the --pre(-release) 
 		option because of PyPDS' non-standard versioning scheme.
 		So, use: 
+		
 		pip install --pre PyPDS
 
 	* From the GitHub repository
