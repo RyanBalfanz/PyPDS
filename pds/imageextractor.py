@@ -17,10 +17,11 @@ import unittest
 
 try:
 	import Image
+	import ImageMath
 except ImportError:
 	from PIL import Image
+	from PIL import ImageMath
 
-import ImageMath
 
 from core.common import open_pds
 from core.parser import Parser
