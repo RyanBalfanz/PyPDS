@@ -7,6 +7,6 @@ Created by Ryan Matthew Balfanz on 2009-05-28.
 Copyright (c) 2009 Ryan Matthew Balfanz. All rights reserved.
 """
 
-from core import *
+from .core import *
 
 __all__ = ['core', 'imageextractor']
