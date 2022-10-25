@@ -4,3 +4,7 @@ src/doc/.build/
 *.pyc
 *.log
 *.IMG
+build/
+PyPDS.egg-info/top_level.txt
+PyPDS.egg-info/SOURCES.txt
+PyPDS.egg-info/PKG-INFO
