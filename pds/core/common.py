@@ -48,7 +48,7 @@ def open_pds(source):
 	# if isinstance(source, file):
 	# 	return source
 	if hasattr(source, "read"):
-		# sys.stderr.write("Identified a file-like object by read() method existence\n")
+		#sys.stderr.write("Identified a file-like object by read() method existence\n")
 		return source
 
 	try:
@@ -57,6 +57,12 @@ def open_pds(source):
 		# PDS style newlines are "\r\n", however, http://pds.jpl.nasa.gov/documents/qs/sample_image.lbl uses "\n".
 		# Check if hasattr(open, 'newlines') to verify that universal newline support is enabeled.
 		f = open(source, "rb")
+
+		#reading the file as a byte-like object. Try to decode if necessary
+		try:
+			f = f.decode('utf-8')
+		except(UnicodeDecodeError, AttributeError):
+			pass
 		return f
 	except (IOError, OSError):
 		# sys.stderr.write("Could not open source\n")
