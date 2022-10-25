@@ -19,7 +19,7 @@ import sys
 import unittest
 
 #from common import open_pds
-from reader import Reader
+from .reader import Reader
 
 
 class ParserError(Exception):
@@ -184,7 +184,7 @@ class ParserTests(unittest.TestCase):
 				try:
 					labels = pdsparser.parse(open_pds(filename))
 					# labels = pdsparser.labels # Old usage, depriciated.
-				except Exception, e:
+				except Exception as e:
 					# Re-raise the exception, causing this test to fail.
 					raise
 				else:
@@ -200,5 +200,5 @@ if __name__ == '__main__':
 	pdsparser = Parser()
 	labels = pdsparser.parse(open_pds(filename))
 	# labels = pdsparser.labels # Old usage, depriciated.
-	print labels.keys()
-	print labels['IMAGE END']
+	print(labels.keys())
+	print(labels['IMAGE END'])
