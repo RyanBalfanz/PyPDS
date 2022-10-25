@@ -137,10 +137,18 @@ class Reader(object):
 		if self.log: self.log.debug('Tonekization')
 		tokens = []
 		for i, line in enumerate(source):
+			#decode if this is a bytes-like object
+			try:
+				line = line.decode('utf-8')
+			except(UnicodeDecodeError, AttributeError):
+				pass
+
 		#for i, line in enumerate(it):
 			line = line.strip()
+			print(line)
 			if not line:
 				continue
+
 			elif commentStart.match(line):
 				if not commentEnd.search(line):
 					if self.log: self.log.warn("Detected possible multiline comment near line %d" % i)
@@ -163,7 +171,7 @@ class Reader(object):
 			dataStartIndex = recIndx + 1
 			try:
 				dataEndIndex = recordIndicies[i + 1] - 1
-			except IndexError, e:
+			except IndexError as  e:
 				errorMessage = 'i: %d, Number of tokens: %d' % (i, len(tokens))
 				assert i == (len(recordIndicies) - 1), errorMessage
 				dataEndIndex = len(tokens) - 1
@@ -204,7 +212,7 @@ class ReaderTests(unittest.TestCase):
 					for record in pdsreader.read(open_pds(filename)):
 						#print record
 						pass
-				except Exception, e:
+				except Exception as e:
 					# Re-raise the exception, causing this test to fail.
 					raise
 				else:
